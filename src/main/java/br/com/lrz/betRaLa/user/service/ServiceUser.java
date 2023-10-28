@@ -7,11 +7,13 @@ import br.com.lrz.betRaLa.user.dao.IDaoUser;
 import br.com.lrz.betRaLa.user.model.User;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author lara
  */
+@Service
 public class ServiceUser implements IServiceUser{
     @Autowired
     private IDaoUser daoUser;
