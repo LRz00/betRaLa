@@ -4,10 +4,15 @@
  */
 package br.com.lrz.betRaLa.infrastructure.service;
 
+import br.com.lrz.betRaLa.admin.model.Admin;
 import br.com.lrz.betRaLa.time.model.Time;
 
 public interface IFacade {
     //###################TIME###################
 
     public abstract void salvarTime(Time time);
+    
+    //###################ADMIN###################
+    
+    public abstract Admin isAdmin(Long code); 
 }

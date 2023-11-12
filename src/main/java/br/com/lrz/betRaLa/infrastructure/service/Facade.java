@@ -4,6 +4,8 @@
  */
 package br.com.lrz.betRaLa.infrastructure.service;
 
+import br.com.lrz.betRaLa.admin.model.Admin;
+import br.com.lrz.betRaLa.admin.service.IServiceAdmin;
 import br.com.lrz.betRaLa.time.model.Time;
 import br.com.lrz.betRaLa.time.service.IServiceTime;
 import java.util.List;
@@ -20,6 +22,15 @@ public class Facade implements IFacade {
     @Override
     public void salvarTime(Time time) {
         serviceTime.saveTime(time);
+    }
+
+    
+        //###################ADMIN###################
+    @Autowired
+    IServiceAdmin serviceAdmin;
+    @Override
+    public Admin isAdmin(Long code) {
+    return serviceAdmin.isAdmin(code);
     }
     
     

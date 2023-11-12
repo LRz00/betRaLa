@@ -7,14 +7,15 @@ package br.com.lrz.betRaLa.time.view;
 import br.com.lrz.betRaLa.infrastructure.service.IFacade;
 import br.com.lrz.betRaLa.time.model.Time;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author lara
  */
+@Component
 public class CriarTimeView extends javax.swing.JFrame {
-
-    @Autowired
+    
     Time time;
     @Autowired
     IFacade facade;
@@ -99,6 +100,7 @@ public class CriarTimeView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        this.time = new Time();
         this.time.setNome(txtNome.getText());
         this.facade.salvarTime(time);
     }//GEN-LAST:event_btnSaveActionPerformed
