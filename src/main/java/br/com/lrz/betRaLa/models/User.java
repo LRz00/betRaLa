@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class User {
     @Id @Column(nullable = false)
-    private long cpf;
+    private Long cpf;
     @Column(nullable = false)
     private String nome; 
     private Double saldo;
