@@ -2,31 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package br.com.lrz.betRaLa.time.service;
-
-import br.com.lrz.betRaLa.time.dao.IDaoTime;
-import br.com.lrz.betRaLa.time.model.Time;
+package br.com.lrz.betRaLa.services;
+import br.com.lrz.betRaLa.models.User;
+import br.com.lrz.betRaLa.repositories.IDaoUser;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 /**
  *
  * @author lara
  */
 @Service
-public class ServiceTime implements IServiceTime{
+public class ServiceUser implements IServiceUser{
     @Autowired
-    IDaoTime timeDao;
-    
-    @Override
-    public List<Time> getAll() {
-       List list= timeDao.findAll();
-       return list;
-    }
+    private IDaoUser daoUser;
 
     @Override
-    public void saveTime(Time time) {
-       timeDao.save(time);
+    public void saveUser(User usuario) {
+        daoUser.save(usuario);
+    }
+    
+    @Override 
+    public List<User> getAllUsers(){
+       return daoUser.findAll();
     }
     
 }
