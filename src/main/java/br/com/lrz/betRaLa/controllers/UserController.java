@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public class UserController {
     
     @GetMapping("/{cpf}")
     public ResponseEntity findByCpf(Long cpf){
-        Optional<User> user = this.userService.findByCpf(cpf);
+        User user = this.userService.findByCpf(cpf);
         return ResponseEntity.ok().body(user);
     }
     
@@ -41,10 +42,19 @@ public class UserController {
         User newUser = this.userService.create(user);
         
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(newUser.getCpf()).toUri();
+                .path("/{cpf}").buildAndExpand(newUser.getCpf()).toUri();
         
         return ResponseEntity.created(uri).build();
     }
     
     //TO-DO: OTHER MAPPINGS
+    
+    //delete
+    @DeleteMapping("/{cpf}")
+    public void delete (User user){
+        User deletableUser = (User) this.userService.findByCpf(user.getCpf());
+    }
+    //update
+    
+    
 }
