@@ -5,6 +5,7 @@
 package br.com.lrz.betRaLa.services;
 
 import br.com.lrz.betRaLa.models.User;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,5 +17,6 @@ public interface IServiceUser {
     public abstract User create(User usuario);
     public abstract List<User> getAll();
     public abstract void delete (User user);
-    public abstract Optional<User> findByCpf(Long cpf);
+    public abstract User findByCpf(Long cpf);
+    public abstract void updateSaldo(BigDecimal value, Long cpf);
 }
