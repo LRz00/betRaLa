@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
  */
 
 @Entity
-@Table(name = "pessoa")
+@Table(name = "user")
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class User {
