@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +51,7 @@ public class UserController {
                 .path("/{cpf}").buildAndExpand(newUser.getCpf()).toUri();
         
         return ResponseEntity.created(uri).build();
-    }
-    
-    //TO-DO: OTHER MAPPINGS
+    }    
     
     //delete
     @DeleteMapping("/{cpf}")
@@ -64,7 +63,11 @@ public class UserController {
     //update
 
     @PutMapping("/updateSaldo")
-    public ResponseEntity<Void> updateSaldo(@RequestParam BigDecimal value, @RequestParam Long cpf) {
+    public ResponseEntity<Void> updateSaldo(@RequestBody Map<String, Object> payload) {
+        BigDecimal value = new BigDecimal(payload.get("value").toString());
+        
+        Long cpf = Long.parseLong(payload.get("cpf").toString());
+        
         this.userService.updateSaldo(value, cpf);
         return ResponseEntity.noContent().build();
     }
