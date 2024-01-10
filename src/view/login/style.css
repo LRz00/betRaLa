@@ -1,0 +1,73 @@
+body {
+    display: flex;
+    height: 100vh;
+    margin: 0; 
+    background-color: rgb(66, 97, 163);
+}
+
+.create-form {
+    flex: 1;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    color:#6fd8d3; 
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+    background-color:rgba(240, 248, 255, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+.banner-messi{
+    flex: 1;
+    background: url('/src/main/resources/imagens/banner-messi.png') left/cover no-repeat;
+    background-size:auto;
+}
+
+.banner-messi::before {
+    content: 'BECOME A WINNER';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: rgb(226, 226, 90);
+    font-size: 24px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    text-align:left;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.create-form input, .create-form label {
+    margin-bottom: 15px; 
+}
+
+
+.create-form input[type="submit"] {
+    background-color: #4CAF50; 
+    color: white; 
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-form input[type="submit"]:hover {
+    background-color: #45a049; 
+}
+
+.create-form input {
+    background-color: rgb(100, 98, 98);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
