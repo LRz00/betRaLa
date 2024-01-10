@@ -14,5 +14,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IDaoUser extends JpaRepository<User, Long>{
     public User findByCpf(Long cpf);
-    
+    boolean existsByEmail(String email);
+    boolean existsByCpf(Long cpf);
 }

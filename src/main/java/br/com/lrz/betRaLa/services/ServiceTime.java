@@ -20,13 +20,23 @@ public class ServiceTime implements IServiceTime{
     
     @Override
     public List<Time> getAll() {
-       List list= timeDao.findAll();
+       List list= this.timeDao.findAll();
        return list;
     }
 
     @Override
     public void saveTime(Time time) {
-       timeDao.save(time);
+        if(this.timeDao.existsByNome(time.getNome())){
+            throw new RuntimeException("There alreay is a time with that name");
+        }else{
+            timeDao.save(time);
+        }        
+       
+    }
+    
+    @Override 
+    public void delete(Time time){
+        this.timeDao.delete(time);
     }
     
 }
