@@ -24,10 +24,19 @@ public class ServiceUser implements IServiceUser {
 
     @Override
     public User create(User usuario) {
-        //to do: service layer checkin of unique constraints
         //to do: password encryption
-        usuario.setId(null);
+                // Check if email and cpf are unique before creating a new user
+        if (daoUser.existsByEmail(usuario.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
 
+        if (daoUser.existsByCpf(usuario.getCpf())) {
+            throw new RuntimeException("CPF already exists");
+        }
+
+        // Additional checks or validations can be added here
+
+        usuario.setId(null);
         usuario = daoUser.save(usuario);
 
         return usuario;
