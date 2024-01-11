@@ -13,7 +13,9 @@ import java.util.List;
 public interface IServiceTime {
     public abstract List<Time> getAll();
     
-    public abstract void saveTime(Time time);
+    public abstract Time saveTime(Time time);
     
     public abstract void delete(Time time);
+    
+    public abstract Time findById(Long id);
 }

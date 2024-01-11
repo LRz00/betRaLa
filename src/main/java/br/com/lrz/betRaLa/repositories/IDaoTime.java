@@ -16,4 +16,8 @@ import org.springframework.stereotype.Repository;
 public interface IDaoTime extends JpaRepository<Time, String>{
     
     public boolean existsByNome(String nome);
+    
+    public Time findById(Long id);
+    public Time findByNome(String nome);
+    
 }

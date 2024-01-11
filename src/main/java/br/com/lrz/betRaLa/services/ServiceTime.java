@@ -25,11 +25,13 @@ public class ServiceTime implements IServiceTime{
     }
 
     @Override
-    public void saveTime(Time time) {
+    public Time saveTime(Time time) {
         if(this.timeDao.existsByNome(time.getNome())){
-            throw new RuntimeException("There alreay is a time with that name");
+            throw new RuntimeException("There alreay is a team with that name");
         }else{
-            timeDao.save(time);
+           time.setId(null);
+           this.timeDao.save(time);
+           return time;
         }        
        
     }
@@ -37,6 +39,11 @@ public class ServiceTime implements IServiceTime{
     @Override 
     public void delete(Time time){
         this.timeDao.delete(time);
+    }
+    
+    @Override
+    public Time findById(Long id){
+        return this.timeDao.findById(id);
     }
     
 }
