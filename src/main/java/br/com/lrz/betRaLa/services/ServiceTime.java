@@ -7,6 +7,7 @@ package br.com.lrz.betRaLa.services;
 import br.com.lrz.betRaLa.models.Time;
 import br.com.lrz.betRaLa.repositories.IDaoTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /**
@@ -42,7 +43,7 @@ public class ServiceTime implements IServiceTime{
     }
     
     @Override
-    public Time findById(Long id){
+    public Optional<Time> findById(Long id){
         return this.timeDao.findById(id);
     }
     

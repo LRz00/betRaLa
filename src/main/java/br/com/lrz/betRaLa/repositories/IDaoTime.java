@@ -5,6 +5,7 @@
 package br.com.lrz.betRaLa.repositories;
 
 import br.com.lrz.betRaLa.models.Time;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,11 +14,11 @@ import org.springframework.stereotype.Repository;
  * @author lara
  */
 @Repository
-public interface IDaoTime extends JpaRepository<Time, String>{
+public interface IDaoTime extends JpaRepository<Time, Long>{
     
     public boolean existsByNome(String nome);
     
-    public Time findById(Long id);
+    public Optional<Time> findById(Long id);
     public Time findByNome(String nome);
     
 }

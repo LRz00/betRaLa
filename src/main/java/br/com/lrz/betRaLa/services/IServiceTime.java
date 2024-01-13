@@ -5,6 +5,7 @@
 package br.com.lrz.betRaLa.services;
 import br.com.lrz.betRaLa.models.Time;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -17,5 +18,5 @@ public interface IServiceTime {
     
     public abstract void delete(Time time);
     
-    public abstract Time findById(Long id);
+    public abstract Optional<Time> findById(Long id);
 }

@@ -8,6 +8,7 @@ import br.com.lrz.betRaLa.models.Time;
 import br.com.lrz.betRaLa.models.User;
 import br.com.lrz.betRaLa.services.ServiceTime;
 import java.net.URI;
+import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class TimeController {
 
     @GetMapping("{id}")
     public ResponseEntity findById(Long Id) {
-        Time time = this.timeService.findById(Id);
+        Optional<Time> time = this.timeService.findById(Id);
 
         return ResponseEntity.ok().body(time);
     }
@@ -53,8 +54,11 @@ public class TimeController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        Time deletable = this.timeService.findById(id);
-        this.timeService.delete(deletable);
+        Optional<Time> OptionalDeletable = this.timeService.findById(id);
+        Time deletable = OptionalDeletable.orElse(null);
+        if(deletable != null){
+            this.timeService.delete(deletable);
+        }
         return ResponseEntity.noContent().build();
     }
 
