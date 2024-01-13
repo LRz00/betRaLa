@@ -26,7 +26,7 @@ body {
 }
 
 .banner-messi::before {
-    content: 'BECOME A WINNER';
+    content: 'Become a winner';
     position: absolute;
     top: 0;
     right: 0;
@@ -50,7 +50,7 @@ body {
 }
 
 
-.create-form input[type="submit"] {
+.create-form button {
     background-color: #4CAF50; 
     color: white; 
     padding: 12px 20px;
@@ -59,7 +59,7 @@ body {
     cursor: pointer;
 }
 
-.create-form input[type="submit"]:hover {
+.create-form button:hover {
     background-color: #45a049; 
 }
 
