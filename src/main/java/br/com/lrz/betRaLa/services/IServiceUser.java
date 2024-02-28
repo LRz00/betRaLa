@@ -18,6 +18,6 @@ public interface IServiceUser {
     public abstract List<User> getAll();
     public abstract void delete (User user);
     public abstract User findByCpf(Long cpf);
-    public abstract void updateSaldo(BigDecimal value, Long cpf);
+    public abstract void updateSaldo(Float value, Long cpf);
     public abstract void update(User user);
 }

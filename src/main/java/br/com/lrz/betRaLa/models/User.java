@@ -37,7 +37,7 @@ public class User {
     @Column(nullable = false)
     private String nome; 
     
-    private BigDecimal saldo;
+    private Float saldo;
     
     @Column(nullable = false, unique = true)
     private String email;

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ServiceUser implements IServiceUser {
+    //@Autowired
+    //private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private IDaoUser daoUser;
@@ -25,7 +28,7 @@ public class ServiceUser implements IServiceUser {
     @Override
     public User create(User usuario) {
         //to do: password encryption
-                // Check if email and cpf are unique before creating a new user
+        // Check if email and cpf are unique before creating a new user
         if (daoUser.existsByEmail(usuario.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
@@ -35,8 +38,8 @@ public class ServiceUser implements IServiceUser {
         }
 
         // Additional checks or validations can be added here
-
         usuario.setId(null);
+        usuario.setSenha(usuario.getSenha());
         usuario = daoUser.save(usuario);
 
         return usuario;
@@ -49,9 +52,11 @@ public class ServiceUser implements IServiceUser {
 
     @Override
     public void delete(User user) {
-        if (user.getSaldo().compareTo(BigDecimal.ZERO) < 0) {
+        Float currentSaldo = user.getSaldo();
+
+        if (currentSaldo < 0) {
             throw new RuntimeException("User has pending debt and cannot be deleted");
-        } else if (user.getSaldo().compareTo(BigDecimal.ZERO) > 0) {
+        } else if (currentSaldo > 0) {
             throw new RuntimeException("User has a positive balance, withdrawal required prior to deletion.");
         } else {
             this.daoUser.delete(user);
@@ -65,23 +70,17 @@ public class ServiceUser implements IServiceUser {
     }
 
     @Override
-    public void updateSaldo(BigDecimal value, Long cpf) {
-        User user = findByCpf(cpf);
-        System.out.println(value.toString());
-        
-        // Check if it's a withdrawal and if there is enough money in the account
-        if (value.compareTo(BigDecimal.ZERO) < 0) {
-            BigDecimal newSaldo = user.getSaldo().subtract(value);
-            System.out.println(newSaldo.toString());
+    public void updateSaldo(Float value, Long cpf) {
 
-            if (newSaldo.compareTo(BigDecimal.ZERO) < 0) {
-                throw new RuntimeException("Account does not have requested withdraw value");
-            } else {
-                user.setSaldo(newSaldo);
-            }
-        } // Check if it's a deposit
-        else if (value.compareTo(BigDecimal.ZERO) > 0) {
-            user.setSaldo(user.getSaldo().add(value));
+        User user = findByCpf(cpf);
+
+        Float newSaldo = user.getSaldo() + value;
+        
+         // Check if it's a withdrawal and if there is enough money in the account
+        if (newSaldo < 0) {
+            throw new RuntimeException("Account does not have requested withdraw value");
+        } else {
+            user.setSaldo(newSaldo);
         }
 
         // Update the user object in the database

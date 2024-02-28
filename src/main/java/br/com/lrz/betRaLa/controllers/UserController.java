@@ -9,7 +9,6 @@ import br.com.lrz.betRaLa.services.IServiceUser;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class UserController {
     @Autowired
     IServiceUser userService;
-    
+       
     @GetMapping("/{cpf}")
     public ResponseEntity findByCpf(@PathVariable Long cpf){
         User user = this.userService.findByCpf(cpf);
@@ -65,7 +64,7 @@ public class UserController {
 
     @PutMapping("/updateSaldo")
     public ResponseEntity<Void> updateSaldo(@RequestBody Map<String, Object> payload) {
-        BigDecimal value = new BigDecimal(payload.get("value").toString());
+        Float value = Float.parseFloat(payload.get("value").toString());
         
         Long cpf = Long.parseLong(payload.get("cpf").toString());
         
