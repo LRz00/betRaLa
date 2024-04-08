@@ -5,26 +5,30 @@
 package br.com.lrz.betRaLa.models;
 
 import java.util.Date;
-import java.util.Set;
+
 import javax.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 /**
  *
  * @author lara
  */
-@Data
+@Getter
+@Setter
 @Entity
-@Table(name = "jogo")
-public class Jogo {
+@Table(name = "match")
+public class Match {
     @Id
     private Long id;
     
     @Temporal(TemporalType.DATE)
     private Date data;
     
-    private String resultado;
+    private String result;
     
-    @OneToMany(mappedBy = "jogo")
-    private Set<Participacao> participacoes;
+    private String teamA;
+    
+    private String teamB;
+    
+    private String winner;
 }

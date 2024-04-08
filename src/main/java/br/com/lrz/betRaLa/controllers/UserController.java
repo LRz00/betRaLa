@@ -5,8 +5,7 @@
 package br.com.lrz.betRaLa.controllers;
 
 import br.com.lrz.betRaLa.models.User;
-import br.com.lrz.betRaLa.services.IServiceUser;
-import java.math.BigDecimal;
+import br.com.lrz.betRaLa.services.UserService;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 public class UserController {
     @Autowired
-    IServiceUser userService;
+    UserService userService;
        
     @GetMapping("/{cpf}")
     public ResponseEntity findByCpf(@PathVariable Long cpf){

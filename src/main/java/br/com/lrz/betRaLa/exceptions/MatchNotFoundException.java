@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package br.com.lrz.betRaLa.models;
+package br.com.lrz.betRaLa.exceptions;
 
 /**
  *
  * @author lara
  */
-public enum PapelTime {
-    TIME_CASA,
-    TIME_VISITANTE,
-    VENCEDOR
+public class MatchNotFoundException extends RuntimeException{
+    public MatchNotFoundException(String message){
+        super(message);
+    }
 }

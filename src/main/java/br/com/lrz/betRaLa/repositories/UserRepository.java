@@ -3,16 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
 package br.com.lrz.betRaLa.repositories;
-
-import br.com.lrz.betRaLa.models.Jogo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import br.com.lrz.betRaLa.models.User;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
-
 /**
  *
  * @author lara
  */
 @Repository
-public interface IDaoJogo extends JpaRepository<Jogo, Long>{      
-    
+public interface UserRepository extends JpaRepository<User, Long>{
+    public User findByCpf(Long cpf);
+    boolean existsByEmail(String email);
+    boolean existsByCpf(Long cpf);
 }

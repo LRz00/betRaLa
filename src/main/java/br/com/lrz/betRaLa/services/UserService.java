@@ -5,52 +5,48 @@
 package br.com.lrz.betRaLa.services;
 
 import br.com.lrz.betRaLa.models.User;
-import br.com.lrz.betRaLa.repositories.IDaoUser;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import br.com.lrz.betRaLa.repositories.UserRepository;
 
 /**
  *
  * @author lara
  */
 @Service
-public class ServiceUser implements IServiceUser {
+public class UserService {
     //@Autowired
     //private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    private IDaoUser daoUser;
+    private UserRepository userRepo;
 
-    @Override
     public User create(User usuario) {
         //to do: password encryption
         // Check if email and cpf are unique before creating a new user
-        if (daoUser.existsByEmail(usuario.getEmail())) {
+        if (userRepo.existsByEmail(usuario.getEmail())) {
             throw new RuntimeException("Email already exists");
         }
 
-        if (daoUser.existsByCpf(usuario.getCpf())) {
+        if (userRepo.existsByCpf(usuario.getCpf())) {
             throw new RuntimeException("CPF already exists");
         }
 
         // Additional checks or validations can be added here
         usuario.setId(null);
         usuario.setSenha(usuario.getSenha());
-        usuario = daoUser.save(usuario);
+        usuario = userRepo.save(usuario);
 
         return usuario;
     }
 
-    @Override
     public List<User> getAll() {
-        return daoUser.findAll();
+        return userRepo.findAll();
     }
 
-    @Override
+
     public void delete(User user) {
         Float currentSaldo = user.getSaldo();
 
@@ -59,17 +55,17 @@ public class ServiceUser implements IServiceUser {
         } else if (currentSaldo > 0) {
             throw new RuntimeException("User has a positive balance, withdrawal required prior to deletion.");
         } else {
-            this.daoUser.delete(user);
+            this.userRepo.delete(user);
         }
 
     }
 
-    @Override
+
     public User findByCpf(Long cpf) {
-        return this.daoUser.findByCpf(cpf);
+        return this.userRepo.findByCpf(cpf);
     }
 
-    @Override
+
     public void updateSaldo(Float value, Long cpf) {
 
         User user = findByCpf(cpf);
@@ -87,10 +83,9 @@ public class ServiceUser implements IServiceUser {
         update(user);
     }
 
-    @Override
     public void update(User user) {
         // Additional checks or validations before updating, if needed
-        this.daoUser.save(user);
+        this.userRepo.save(user);
     }
 
 }

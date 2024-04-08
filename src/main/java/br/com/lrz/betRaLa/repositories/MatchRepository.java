@@ -4,15 +4,13 @@
  */
 package br.com.lrz.betRaLa.repositories;
 
-import br.com.lrz.betRaLa.models.Participacao;
+import br.com.lrz.betRaLa.models.Match;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author lara
  */
-@Repository
-public interface IDaoParticipacao extends JpaRepository<Participacao, Long>{
+public interface MatchRepository extends JpaRepository<Match, Long>{
     
 }
