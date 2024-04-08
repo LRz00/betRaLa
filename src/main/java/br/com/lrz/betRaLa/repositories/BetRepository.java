@@ -4,7 +4,7 @@
  */
 package br.com.lrz.betRaLa.repositories;
 
-import br.com.lrz.betRaLa.models.Match;
+import br.com.lrz.betRaLa.models.Bet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +13,6 @@ import org.springframework.stereotype.Repository;
  * @author lara
  */
 @Repository
-public interface MatchRepository extends JpaRepository<Match, Long>{
+public interface BetRepository extends JpaRepository<Bet, Long> {
     
 }

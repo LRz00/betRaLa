@@ -12,11 +12,13 @@ import br.com.lrz.betRaLa.repositories.MatchRepository;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author lara
  */
+@Service
 public class MatchService{
     @Autowired
     private MatchRepository matchRepo;

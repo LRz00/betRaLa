@@ -87,5 +87,9 @@ public class UserService {
         // Additional checks or validations before updating, if needed
         this.userRepo.save(user);
     }
+    
+    public User getUser(Long id){
+        return this.userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
 
 }

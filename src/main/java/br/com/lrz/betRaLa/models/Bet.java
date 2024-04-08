@@ -33,4 +33,7 @@ public class Bet {
     
     @Column(nullable = false)
     private String winner;
+    
+    @Column(nullable=false)
+    private String result;
 }
