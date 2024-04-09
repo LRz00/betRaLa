@@ -29,11 +29,9 @@ public class Bet {
     private User user;
     
     @Column(nullable = false)
-    private Float betAmount;
+    private Float value;
     
     @Column(nullable = false)
     private String winner;
     
-    @Column(nullable=false)
-    private String result;
 }
