@@ -94,7 +94,7 @@ public void settleAllBets(Match match){
     List<Bet> losers = new ArrayList<>();
     
     for(Bet bet :betsMade){
-        if(bet.getWinner().equals(match.getWinner())){
+        if(this.isBetWon(bet.getId())){
             winners.add(bet);
         }else{
             losers.add(bet);

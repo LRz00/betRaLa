@@ -12,8 +12,6 @@
 - @ControllerAdvice for Exception handling not created.
 
 ## ✅️TO-DO LIST:
-- **implement validations on UserService update**
-- **In BetService change the validation on method settleAllBets to use method isBetWon**
 - **Create missing end-points**
 - **Implement authentification/login methods**
 ---

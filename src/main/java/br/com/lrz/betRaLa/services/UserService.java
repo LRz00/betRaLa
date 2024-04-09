@@ -4,12 +4,16 @@
  */
 package br.com.lrz.betRaLa.services;
 
+import br.com.lrz.betRaLa.exceptions.NotValidCredentialsException;
+import br.com.lrz.betRaLa.exceptions.UserInsufficientBalanceException;
+import br.com.lrz.betRaLa.exceptions.UserNotFoundException;
 import br.com.lrz.betRaLa.models.User;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import br.com.lrz.betRaLa.repositories.UserRepository;
+import java.util.Objects;
 
 /**
  *
@@ -27,11 +31,11 @@ public class UserService {
         //to do: password encryption
         // Check if email and cpf are unique before creating a new user
         if (userRepo.existsByEmail(usuario.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new NotValidCredentialsException("Email already exists");
         }
 
         if (userRepo.existsByCpf(usuario.getCpf())) {
-            throw new RuntimeException("CPF already exists");
+            throw new NotValidCredentialsException("CPF already exists");
         }
 
         // Additional checks or validations can be added here
@@ -51,9 +55,9 @@ public class UserService {
         Float currentSaldo = user.getSaldo();
 
         if (currentSaldo < 0) {
-            throw new RuntimeException("User has pending debt and cannot be deleted");
+            throw new UserInsufficientBalanceException("User has pending debt and cannot be deleted");
         } else if (currentSaldo > 0) {
-            throw new RuntimeException("User has a positive balance, withdrawal required prior to deletion.");
+            throw new UserInsufficientBalanceException("User has a positive balance, withdrawal required prior to deletion.");
         } else {
             this.userRepo.delete(user);
         }
@@ -74,7 +78,7 @@ public class UserService {
         
          // Check if it's a withdrawal and if there is enough money in the account
         if (newSaldo < 0) {
-            throw new RuntimeException("Account does not have requested withdraw value");
+            throw new UserInsufficientBalanceException("Account does not have requested withdraw value");
         } else {
             user.setSaldo(newSaldo);
         }
@@ -83,13 +87,23 @@ public class UserService {
         update(user);
     }
 
-    public void update(User user) {
-        // Additional checks or validations before updating, if needed
-        this.userRepo.save(user);
+    public void update(User user) {        
+        User updateUser = this.getUser(user.getId());
+        
+        if(!Objects.equals(updateUser.getSaldo(), user.getSaldo())){
+            updateUser.setSaldo(user.getSaldo());
+        }
+        if(!updateUser.getSenha().equals(user.getSenha())){
+            updateUser.setSenha(user.getSenha());
+        }
+        if(!updateUser.getCpf().equals(user.getCpf())){
+            throw new NotValidCredentialsException("USER CPF CANNOT BE CHANGED");
+        }
+        this.userRepo.save(updateUser);
     }
     
     public User getUser(Long id){
-        return this.userRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return this.userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
 }
