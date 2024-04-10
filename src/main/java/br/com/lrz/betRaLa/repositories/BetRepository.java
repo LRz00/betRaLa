@@ -15,5 +15,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BetRepository extends JpaRepository<Bet, Long> {
-    public List<Bet> findByMatchId(Long matchId);
+    public List<Bet> findByGameId(Long matchId);
 }

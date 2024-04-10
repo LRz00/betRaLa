@@ -16,18 +16,21 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "match")
-public class Match {
+@Table(name = "game")
+public class Game {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Temporal(TemporalType.DATE)
-    private Date data;
+    //@Temporal(TemporalType.DATE)
+    //private Date data;
     
-    private String result;
+    private String score;
     
+    @Column(nullable = false)
     private String teamA;
     
+    @Column(nullable = false)
     private String teamB;
     
     private String winner;

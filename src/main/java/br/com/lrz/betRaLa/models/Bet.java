@@ -18,18 +18,19 @@ import lombok.Setter;
 @Table(name = "bet")
 public class Bet {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
     @ManyToOne
-    @JoinColumn(name = "match_id", nullable = false)
-    private Match match;
+    @JoinColumn(name = "game_id", nullable = false)
+    private Game game;
     
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     
     @Column(nullable = false)
-    private Float value;
+    private Float amount;
     
     @Column(nullable = false)
     private String winner;

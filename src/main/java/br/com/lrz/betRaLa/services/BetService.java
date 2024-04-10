@@ -9,7 +9,7 @@ import br.com.lrz.betRaLa.exceptions.TeamNotPlayingException;
 import br.com.lrz.betRaLa.exceptions.UserInsufficientBalanceException;
 import br.com.lrz.betRaLa.exceptions.BetNotFoundException;
 import br.com.lrz.betRaLa.models.Bet;
-import br.com.lrz.betRaLa.models.Match;
+import br.com.lrz.betRaLa.models.Game;
 import br.com.lrz.betRaLa.models.User;
 import br.com.lrz.betRaLa.repositories.BetRepository;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class BetService {
     BetRepository betRepo;
     
     @Autowired
-    MatchService matchService;
+    GameService matchService;
     
     @Autowired 
     UserService userService;
@@ -39,7 +39,7 @@ public class BetService {
         IT CHECKS IS THE WINNER SELECTED BY THE WINNER IS A VALID OPTION(MUST CHOOSE BETWEEN TEAMA AND TEAMB)
     */    
 public Bet createNewBet(Long matchId, Long userId, String winner, float value){
-    Match match = this.matchService.getMatch(matchId);
+    Game match = this.matchService.getMatch(matchId);
     User user = this.userService.getUser(userId);
     
     if(this.matchService.isMatchOver(match.getId())){
@@ -53,8 +53,8 @@ public Bet createNewBet(Long matchId, Long userId, String winner, float value){
     }    
     Bet newBet =  new Bet();
     
-    newBet.setValue(value);
-    newBet.setMatch(match);
+    newBet.setAmount(value);
+    newBet.setGame(match);
     newBet.setWinner(winner);
 
     this.betRepo.save(newBet);  
@@ -76,7 +76,7 @@ public Bet getBet(Long betId){
 public boolean isBetWon(Long betId){
     Bet bet = this.getBet(betId);
     
-    if(bet.getWinner().equals(bet.getMatch().getWinner())){
+    if(bet.getWinner().equals(bet.getGame().getWinner())){
             return true;        
     }
     return false;
@@ -87,8 +87,8 @@ public boolean isBetWon(Long betId){
         THIS METHOD IS TO BE CALLED WHEN A MATCH IS OVER AND A LOSER HAS BEEN DECIDED.
         IT SEPARATES ALL THE BETS OF THAT MATCH BETWEEN WINNERS AND LOSES.        
     */
-public void settleAllBets(Match match){
-    List<Bet> betsMade = this.betRepo.findByMatchId(match.getId());
+public void settleAllBets(Game match){
+    List<Bet> betsMade = this.betRepo.findByGameId(match.getId());
     
     List<Bet> winners = new ArrayList<>();
     List<Bet> losers = new ArrayList<>();
@@ -109,13 +109,13 @@ public void settleAllBets(Match match){
         THIS METHOD REDISTRIBUATE A % AMMOUNT OF THE LOSERS TOTAL MONEY TO THE WINNERS
     */
 private void redistributeMoney(List<Bet> winners, List<Bet> losers){
-    double totalMoneyLost = losers.stream().mapToDouble(Bet::getValue).sum();
-    double totalWon = winners.stream().mapToDouble(Bet::getValue).sum();
+    double totalMoneyLost = losers.stream().mapToDouble(Bet::getAmount).sum();
+    double totalWon = winners.stream().mapToDouble(Bet::getAmount).sum();
     
     double percentWon = this.calculatePercentangeWon(totalWon, totalMoneyLost);
     
     for(Bet winner : winners){
-        float amountWonByWinner = (float) ((float) winner.getValue() + (percentWon));        
+        float amountWonByWinner = (float) ((float) winner.getAmount() + (percentWon));        
         winner.getUser().setSaldo(winner.getUser().getSaldo() + amountWonByWinner);
     }
     
@@ -127,7 +127,7 @@ private void redistributeMoney(List<Bet> winners, List<Bet> losers){
 private void substractFromLosers(List<Bet> losers){
     for(Bet loser : losers){
         User user = loser.getUser();
-        float moneyLost = loser.getValue();
+        float moneyLost = loser.getAmount();
         this.userService.updateSaldo(-moneyLost, user.getCpf());
     }
 }
