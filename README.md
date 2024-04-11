@@ -14,7 +14,6 @@
 - Currently using Java 8. Change to newer version might be advised. 
 
 ## ✅️TO-DO LIST:
-- **Create missing end-points**
 - **Implement authentification/login methods**
 ---
 ## 👷️SERVICE METHODS:

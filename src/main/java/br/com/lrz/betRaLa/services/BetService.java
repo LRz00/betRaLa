@@ -56,7 +56,7 @@ public Bet createNewBet(Long matchId, Long userId, String winner, float value){
     newBet.setAmount(value);
     newBet.setGame(match);
     newBet.setWinner(winner);
-
+    newBet.setUser(user);
     this.betRepo.save(newBet);  
     
     return newBet;
@@ -139,7 +139,13 @@ private double calculatePercentangeWon(double totalWon, double totalLost){
     
     return Math.min(adjustedPercent, 0.2);
 }
-
+public void cancelBet(Bet bet){
+    if(this.matchService.isMatchOver(bet.getGame().getId())){
+        throw new MatchOverException("Game has ended, bet can no longer be canceled");
+    }else{
+        this.betRepo.delete(bet);
+    }
+}
 }
 
 

@@ -55,7 +55,7 @@ public class GameService{
     
     public boolean isMatchOver(Long matchId){
         Game match = this.getMatch(matchId);
-        if(match.getScore().isEmpty()){
+        if(match.getScore() == null){
             return false;
         }
         return true;
