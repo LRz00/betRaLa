@@ -22,7 +22,6 @@ import br.com.lrz.betRaLa.repositories.GameRepository;
 public class GameService{
     @Autowired
     private GameRepository matchRepo;
-
     
     public Game createMatch(Game game) {
        try{
@@ -37,9 +36,9 @@ public class GameService{
 
 
     public Game definirResultado(Long jogoId, String resultado, String winner) {
+       Game match = this.getMatch(jogoId); 
+        
        try{
-           Game match = this.getMatch(jogoId);
-           
            match.setScore(resultado);
            if(winner.equals(match.getTeamA()) || winner.equals(match.getTeamB())){
                match.setWinner(winner);
@@ -50,7 +49,7 @@ public class GameService{
        }catch(Exception e){
            throw new SetMatchResultException("Error definint match result");
        }
-       
+       this.matchRepo.save(match);
        return this.matchRepo.findById(jogoId).orElseThrow(() -> new SetMatchResultException("Error defining match result"));
     }
     
