@@ -33,7 +33,7 @@ public class BetController {
     
     @PostMapping
     public ResponseEntity<Void> createBet(@RequestBody BetDetailsDTO betDetails){
-      Bet newBet = this.betService.createNewBet(betDetails.getMatchId(), betDetails.getUserId(),betDetails.getWinner(), betDetails.getValue());
+      Bet newBet = this.betService.createNewBet(betDetails.getMatchId(), betDetails.getUserId(),betDetails.getWinner(), betDetails.getAmount());
       
       URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(newBet.getId()).toUri();

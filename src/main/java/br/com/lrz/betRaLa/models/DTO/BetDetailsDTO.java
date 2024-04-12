@@ -15,14 +15,14 @@ public class BetDetailsDTO {
     Long matchId;
     Long userId;
     String winner;
-    float value;
+    float amount;
     String score;
     
     public BetDetailsDTO(Long matchId, Long userId, String winner, float value) {
         this.matchId = matchId;
         this.userId = userId;
         this.winner = winner;
-        this.value = value;
+        this.amount = value;
     }
     
 }

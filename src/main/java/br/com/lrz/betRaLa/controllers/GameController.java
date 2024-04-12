@@ -37,7 +37,7 @@ public class GameController {
     */
     @PostMapping
     public ResponseEntity<Void> newGame(@Valid @RequestBody Game game){
-       Game newGame = this.gameService.createMatch(game);
+       Game newGame = this.gameService.createGame(game);
         
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(newGame.getId()).toUri();
@@ -50,15 +50,15 @@ public class GameController {
     */
     @GetMapping("/{id}")
     public ResponseEntity findGameById(@PathVariable Long id){
-        Game game = this.gameService.getMatch(id);
+        Game game = this.gameService.getGame(id);
         
         return ResponseEntity.ok().body(game);
     }
     
     @PutMapping("/endGame")
     public ResponseEntity<Void> addWinner(@RequestBody EndGameDTO game){
-       this.gameService.definirResultado(game.getId(), game.getScore(), game.getWinner());
-       this.betService.settleAllBets(this.gameService.getMatch(game.getId()));
+       this.gameService.setGameScore(game.getId(), game.getScore(), game.getWinner());
+       this.betService.settleAllBets(this.gameService.getGame(game.getId()));
        return ResponseEntity.noContent().build();
     }
 }

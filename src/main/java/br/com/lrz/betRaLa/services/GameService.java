@@ -4,9 +4,9 @@
  */
 package br.com.lrz.betRaLa.services;
 
-import br.com.lrz.betRaLa.exceptions.CreateMatchException;
-import br.com.lrz.betRaLa.exceptions.MatchNotFoundException;
-import br.com.lrz.betRaLa.exceptions.SetMatchResultException;
+import br.com.lrz.betRaLa.exceptions.CreateGameException;
+import br.com.lrz.betRaLa.exceptions.GameNotFoundException;
+import br.com.lrz.betRaLa.exceptions.SetGameScoreException;
 import br.com.lrz.betRaLa.models.Game;
 import java.util.Optional;
 import java.util.Set;
@@ -21,13 +21,13 @@ import br.com.lrz.betRaLa.repositories.GameRepository;
 @Service
 public class GameService{
     @Autowired
-    private GameRepository matchRepo;
+    private GameRepository gameRepo;
     
-    public Game createMatch(Game game) {
+    public Game createGame(Game game) {
        try{
-           matchRepo.save(game);
+           gameRepo.save(game);
        }catch(Exception e){
-           throw new CreateMatchException("Erro creating new match");
+           throw new CreateGameException("Erro creating new match");
        }
        
        return game;
@@ -35,35 +35,35 @@ public class GameService{
     
 
 
-    public Game definirResultado(Long jogoId, String resultado, String winner) {
-       Game match = this.getMatch(jogoId); 
+    public Game setGameScore(Long gameId, String score, String winner) {
+       Game game = this.getGame(gameId); 
         
        try{
-           match.setScore(resultado);
-           if(winner.equals(match.getTeamA()) || winner.equals(match.getTeamB())){
-               match.setWinner(winner);
+           game.setScore(score);
+           if(winner.equals(game.getTeamA()) || winner.equals(game.getTeamB())){
+               game.setWinner(winner);
            }else{
-               throw new SetMatchResultException("Error defining match result");
+               throw new SetGameScoreException("Error defining game score");
            }
            
        }catch(Exception e){
-           throw new SetMatchResultException("Error definint match result");
+           throw new SetGameScoreException("Error definint game score");
        }
-       this.matchRepo.save(match);
-       return this.matchRepo.findById(jogoId).orElseThrow(() -> new SetMatchResultException("Error defining match result"));
+       this.gameRepo.save(game);
+       return this.gameRepo.findById(gameId).orElseThrow(() -> new SetGameScoreException("Error defining score"));
     }
     
-    public boolean isMatchOver(Long matchId){
-        Game match = this.getMatch(matchId);
-        if(match.getScore() == null){
+    public boolean isGameOver(Long gameId){
+        Game game = this.getGame(gameId);
+        if(game.getScore() == null){
             return false;
         }
         return true;
     }
 
     
-    public Game getMatch(Long id){
-        return this.matchRepo.findById(id).orElseThrow(() -> new MatchNotFoundException("No match find with this ID"));
+    public Game getGame(Long id){
+        return this.gameRepo.findById(id).orElseThrow(() -> new GameNotFoundException("No game find with this ID"));
     }
     
 }

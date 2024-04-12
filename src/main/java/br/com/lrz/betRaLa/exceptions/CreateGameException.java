@@ -8,9 +8,9 @@ package br.com.lrz.betRaLa.exceptions;
  *
  * @author lara
  */
-public class CreateMatchException extends RuntimeException{
+public class CreateGameException extends RuntimeException{
 
-    public CreateMatchException(String message) {
+    public CreateGameException(String message) {
         super(message);
     }
     

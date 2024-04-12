@@ -4,7 +4,7 @@
  */
 package br.com.lrz.betRaLa.services;
 
-import br.com.lrz.betRaLa.exceptions.MatchOverException;
+import br.com.lrz.betRaLa.exceptions.GameOverException;
 import br.com.lrz.betRaLa.exceptions.TeamNotPlayingException;
 import br.com.lrz.betRaLa.exceptions.UserInsufficientBalanceException;
 import br.com.lrz.betRaLa.exceptions.BetNotFoundException;
@@ -27,7 +27,7 @@ public class BetService {
     BetRepository betRepo;
     
     @Autowired
-    GameService matchService;
+    GameService gameService;
     
     @Autowired 
     UserService userService;
@@ -38,23 +38,23 @@ public class BetService {
         IT CHECKS IF THE USER TRYING TO BET HAS THE VALUE HE'S TRYING TO INPUT.
         IT CHECKS IS THE WINNER SELECTED BY THE WINNER IS A VALID OPTION(MUST CHOOSE BETWEEN TEAMA AND TEAMB)
     */    
-public Bet createNewBet(Long matchId, Long userId, String winner, float value){
-    Game match = this.matchService.getMatch(matchId);
+public Bet createNewBet(Long gameId, Long userId, String winner, float value){
+    Game game = this.gameService.getGame(gameId);
     User user = this.userService.getUser(userId);
     
-    if(this.matchService.isMatchOver(match.getId())){
-        throw new MatchOverException("Match is over, no more bets allowed");
+    if(this.gameService.isGameOver(game.getId())){
+        throw new GameOverException("Match is over, no more bets allowed");
     }
-    if(user.getSaldo()<value){
+    if(user.getBalance()<value){
         throw new UserInsufficientBalanceException("User does not have enough balance for desired bet");
     }
-    if(!(winner.equals(match.getTeamA()) || winner.equals(match.getTeamB()))){
+    if(!(winner.equals(game.getTeamA()) || winner.equals(game.getTeamB()))){
         throw new TeamNotPlayingException("The selected winning team is not playing in this match");
     }    
     Bet newBet =  new Bet();
     
     newBet.setAmount(value);
-    newBet.setGame(match);
+    newBet.setGame(game);
     newBet.setWinner(winner);
     newBet.setUser(user);
     this.betRepo.save(newBet);  
@@ -87,8 +87,8 @@ public boolean isBetWon(Long betId){
         THIS METHOD IS TO BE CALLED WHEN A MATCH IS OVER AND A LOSER HAS BEEN DECIDED.
         IT SEPARATES ALL THE BETS OF THAT MATCH BETWEEN WINNERS AND LOSES.        
     */
-public void settleAllBets(Game match){
-    List<Bet> betsMade = this.betRepo.findByGameId(match.getId());
+public void settleAllBets(Game game){
+    List<Bet> betsMade = this.betRepo.findByGameId(game.getId());
     
     List<Bet> winners = new ArrayList<>();
     List<Bet> losers = new ArrayList<>();
@@ -116,7 +116,7 @@ private void redistributeMoney(List<Bet> winners, List<Bet> losers){
     
     for(Bet winner : winners){
         float amountWonByWinner = (float) ((float) winner.getAmount() + (percentWon));        
-        winner.getUser().setSaldo(winner.getUser().getSaldo() + amountWonByWinner);
+        winner.getUser().setBalance(winner.getUser().getBalance() + amountWonByWinner);
     }
     
 }
@@ -128,7 +128,7 @@ private void substractFromLosers(List<Bet> losers){
     for(Bet loser : losers){
         User user = loser.getUser();
         float moneyLost = loser.getAmount();
-        this.userService.updateSaldo(-moneyLost, user.getCpf());
+        this.userService.updateBalance(-moneyLost, user.getCpf());
     }
 }
 
@@ -140,8 +140,8 @@ private double calculatePercentangeWon(double totalWon, double totalLost){
     return Math.min(adjustedPercent, 0.2);
 }
 public void cancelBet(Bet bet){
-    if(this.matchService.isMatchOver(bet.getGame().getId())){
-        throw new MatchOverException("Game has ended, bet can no longer be canceled");
+    if(this.gameService.isGameOver(bet.getGame().getId())){
+        throw new GameOverException("Game has ended, bet can no longer be canceled");
     }else{
         this.betRepo.delete(bet);
     }

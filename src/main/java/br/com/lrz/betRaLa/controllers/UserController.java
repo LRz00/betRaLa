@@ -61,13 +61,13 @@ public class UserController {
     }
     //update
 
-    @PutMapping("/updateSaldo")
+    @PutMapping("/updateBalance")
     public ResponseEntity<Void> updateSaldo(@RequestBody Map<String, Object> payload) {
-        Float value = Float.parseFloat(payload.get("value").toString());
+        Float amount = Float.parseFloat(payload.get("amount").toString());
         
         Long cpf = Long.parseLong(payload.get("cpf").toString());
         
-        this.userService.updateSaldo(value, cpf);
+        this.userService.updateBalance(amount, cpf);
         return ResponseEntity.noContent().build();
     }
     

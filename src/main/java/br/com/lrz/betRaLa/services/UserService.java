@@ -27,23 +27,23 @@ public class UserService {
     @Autowired
     private UserRepository userRepo;
 
-    public User create(User usuario) {
+    public User create(User user) {
         //to do: password encryption
         // Check if email and cpf are unique before creating a new user
-        if (userRepo.existsByEmail(usuario.getEmail())) {
+        if (userRepo.existsByEmail(user.getEmail())) {
             throw new NotValidCredentialsException("Email already exists");
         }
 
-        if (userRepo.existsByCpf(usuario.getCpf())) {
+        if (userRepo.existsByCpf(user.getCpf())) {
             throw new NotValidCredentialsException("CPF already exists");
         }
 
         // Additional checks or validations can be added here
-        usuario.setId(null);
-        usuario.setSenha(usuario.getSenha());
-        usuario = userRepo.save(usuario);
+        user.setId(null);
+        user.setPassword(user.getPassword());
+        user = userRepo.save(user);
 
-        return usuario;
+        return user;
     }
 
     public List<User> getAll() {
@@ -52,7 +52,7 @@ public class UserService {
 
 
     public void delete(User user) {
-        Float currentSaldo = user.getSaldo();
+        Float currentSaldo = user.getBalance();
 
         if (currentSaldo < 0) {
             throw new UserInsufficientBalanceException("User has pending debt and cannot be deleted");
@@ -70,17 +70,17 @@ public class UserService {
     }
 
 
-    public void updateSaldo(Float value, Long cpf) {
+    public void updateBalance(Float value, Long cpf) {
 
         User user = findByCpf(cpf);
 
-        Float newSaldo = user.getSaldo() + value;
+        Float newBalance = user.getBalance() + value;
         
          // Check if it's a withdrawal and if there is enough money in the account
-        if (newSaldo < 0) {
+        if (newBalance < 0) {
             throw new UserInsufficientBalanceException("Account does not have requested withdraw value");
         } else {
-            user.setSaldo(newSaldo);
+            user.setBalance(newBalance);
         }
 
         // Update the user object in the database
@@ -90,11 +90,11 @@ public class UserService {
     public void update(User user) {        
         User updateUser = this.getUser(user.getId());
         
-        if(!Objects.equals(updateUser.getSaldo(), user.getSaldo())){
-            updateUser.setSaldo(user.getSaldo());
+        if(!Objects.equals(updateUser.getBalance(), user.getBalance())){
+            updateUser.setBalance(user.getBalance());
         }
-        if(!updateUser.getSenha().equals(user.getSenha())){
-            updateUser.setSenha(user.getSenha());
+        if(!updateUser.getPassword().equals(user.getPassword())){
+            updateUser.setPassword(user.getPassword());
         }
         if(!updateUser.getCpf().equals(user.getCpf())){
             throw new NotValidCredentialsException("USER CPF CANNOT BE CHANGED");

@@ -34,13 +34,13 @@ public class User {
     private Long cpf;
     
     @Column(nullable = false)
-    private String nome; 
+    private String name; 
     
-    private Float saldo;
+    private Float balance;
     
     @Column(nullable = false, unique = true)
     private String email;
     
     @Column(nullable = false)
-    private String senha;
+    private String password;
 }

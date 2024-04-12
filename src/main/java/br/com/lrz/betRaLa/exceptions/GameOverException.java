@@ -8,8 +8,8 @@ package br.com.lrz.betRaLa.exceptions;
  *
  * @author lara
  */
-public class MatchNotFoundException extends RuntimeException{
-    public MatchNotFoundException(String message){
+public class GameOverException extends RuntimeException{
+    public GameOverException(String message){
         super(message);
     }
 }

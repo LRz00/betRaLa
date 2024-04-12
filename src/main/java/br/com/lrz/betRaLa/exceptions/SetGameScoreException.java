@@ -8,9 +8,9 @@ package br.com.lrz.betRaLa.exceptions;
  *
  * @author lara
  */
-public class SetMatchResultException extends RuntimeException{
+public class SetGameScoreException extends RuntimeException{
 
-    public SetMatchResultException(String message) {
+    public SetGameScoreException(String message) {
         super(message);
     }
     
