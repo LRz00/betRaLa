@@ -7,16 +7,13 @@ package br.com.lrz.betRaLa.services;
 import br.com.lrz.betRaLa.exceptions.NotValidCredentialsException;
 import br.com.lrz.betRaLa.exceptions.UserInsufficientBalanceException;
 import br.com.lrz.betRaLa.exceptions.UserNotFoundException;
-import br.com.lrz.betRaLa.models.DTO.CreateUserDTO;
-import br.com.lrz.betRaLa.models.UserRoles;
-import br.com.lrz.betRaLa.models.Users;
+import br.com.lrz.betRaLa.models.User;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import br.com.lrz.betRaLa.repositories.UserRepository;
 import java.util.Objects;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -24,41 +21,37 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Service
 public class UserService {
+    //@Autowired
+    //private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepo;
 
-    public Users create(CreateUserDTO user) {        
+    public User create(User user) {
         //to do: password encryption
-        Users newUser = new Users();
-        
-        if (userRepo.existsByEmail(user.email())) {
+        // Check if email and cpf are unique before creating a new user
+        if (userRepo.existsByEmail(user.getEmail())) {
             throw new NotValidCredentialsException("Email already exists");
         }
 
-        if (userRepo.existsByCpf(user.cpf())) {
+        if (userRepo.existsByCpf(user.getCpf())) {
             throw new NotValidCredentialsException("CPF already exists");
         }
-        String encryptedPassword = new BCryptPasswordEncoder().encode(user.password());
-        // Additional checks or validations can be added here
-        newUser.setId(null);
-        newUser.setPassword(encryptedPassword);
-        newUser.setBalance(user.balance());
-        newUser.setCpf(user.cpf());
-        newUser.setEmail(user.email());
-        newUser.setName(user.name());
-        newUser.setRole(UserRoles.USER); //todo usuario criado é um 
-        userRepo.save(newUser);
 
-        return newUser;
+        // Additional checks or validations can be added here
+        user.setId(null);
+        user.setPassword(user.getPassword());
+        user = userRepo.save(user);
+
+        return user;
     }
 
-    public List<Users> getAll() {
+    public List<User> getAll() {
         return userRepo.findAll();
     }
 
 
-    public void delete(Users user) {
+    public void delete(User user) {
         Float currentSaldo = user.getBalance();
 
         if (currentSaldo < 0) {
@@ -72,14 +65,14 @@ public class UserService {
     }
 
 
-    public Users findByCpf(Long cpf) {
+    public User findByCpf(Long cpf) {
         return this.userRepo.findByCpf(cpf);
     }
 
 
     public void updateBalance(Float value, Long cpf) {
 
-        Users user = findByCpf(cpf);
+        User user = findByCpf(cpf);
 
         Float newBalance = user.getBalance() + value;
         
@@ -94,8 +87,8 @@ public class UserService {
         update(user);
     }
 
-    public void update(Users user) {        
-        Users updateUser = this.getUser(user.getId());
+    public void update(User user) {        
+        User updateUser = this.getUser(user.getId());
         
         if(!Objects.equals(updateUser.getBalance(), user.getBalance())){
             updateUser.setBalance(user.getBalance());
@@ -109,7 +102,7 @@ public class UserService {
         this.userRepo.save(updateUser);
     }
     
-    public Users getUser(Long id){
+    public User getUser(Long id){
         return this.userRepo.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
