@@ -5,16 +5,16 @@
 ---
 
 ## 🪛️ISSUES THAT NEED FIXING: 
+- Attempt at implementing authentication/login did **not** work. For details check *faulty-security* branch for details.
 - Current Bet methods don't check if user got the score correct, only the winner.
 - Current Game methods don't account for draws.
 - Code variables and methods names not standardized(variates between uses of portuguese and english)(change to be made so everything is in *english*)
 - Code variables and methods still following pre-refactor pattern(Changes needed to any "Match" use to become "Game", "Value" to become "Amount", and "Result" to become "Score")
 - Authentification not implemented.
 - @ControllerAdvice for Exception handling not created.
-- Currently using Java 8. Change to newer version might be advised. 
 
 ## ✅️TO-DO LIST:
-- **Implement authentification/login methods**
+- **Fix implementation of authentification/login methods**
 ---
 ## 👷️SERVICE METHODS:
 **USER SERVICE METHODS:**
