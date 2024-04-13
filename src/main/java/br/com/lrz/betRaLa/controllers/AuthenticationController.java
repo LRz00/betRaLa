@@ -4,7 +4,10 @@
  */
 package br.com.lrz.betRaLa.controllers;
 
+import br.com.lrz.betRaLa.config.TokenService;
 import br.com.lrz.betRaLa.models.DTO.AuthenticationDTO;
+import br.com.lrz.betRaLa.models.DTO.LoginResponseDTO;
+import br.com.lrz.betRaLa.models.Users;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private TokenService tokenService;
     
     @PostMapping("/login")
     ResponseEntity login(@RequestBody @Valid AuthenticationDTO details){
         var usernamePassword = new UsernamePasswordAuthenticationToken(details.getEmail(), details.getPassword());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((Users)auth.getPrincipal());
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }
