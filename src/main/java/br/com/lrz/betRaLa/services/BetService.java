@@ -10,7 +10,7 @@ import br.com.lrz.betRaLa.exceptions.UserInsufficientBalanceException;
 import br.com.lrz.betRaLa.exceptions.BetNotFoundException;
 import br.com.lrz.betRaLa.models.Bet;
 import br.com.lrz.betRaLa.models.Game;
-import br.com.lrz.betRaLa.models.User;
+import br.com.lrz.betRaLa.models.Users;
 import br.com.lrz.betRaLa.repositories.BetRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class BetService {
     */    
 public Bet createNewBet(Long gameId, Long userId, String winner, float value){
     Game game = this.gameService.getGame(gameId);
-    User user = this.userService.getUser(userId);
+    Users user = this.userService.getUser(userId);
     
     if(this.gameService.isGameOver(game.getId())){
         throw new GameOverException("Match is over, no more bets allowed");
@@ -126,7 +126,7 @@ private void redistributeMoney(List<Bet> winners, List<Bet> losers){
 */
 private void substractFromLosers(List<Bet> losers){
     for(Bet loser : losers){
-        User user = loser.getUser();
+        Users user = loser.getUser();
         float moneyLost = loser.getAmount();
         this.userService.updateBalance(-moneyLost, user.getCpf());
     }

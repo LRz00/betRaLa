@@ -4,8 +4,9 @@
  */
 package br.com.lrz.betRaLa.controllers;
 
-import br.com.lrz.betRaLa.models.User;
+import br.com.lrz.betRaLa.models.Users;
 import br.com.lrz.betRaLa.services.UserService;
+import br.com.lrz.betRaLa.models.DTO.CreateUserDTO;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -38,13 +39,13 @@ public class UserController {
        
     @GetMapping("/{cpf}")
     public ResponseEntity findByCpf(@PathVariable Long cpf){
-        User user = this.userService.findByCpf(cpf);
+        Users user = this.userService.findByCpf(cpf);
         return ResponseEntity.ok().body(user);
     }
     
-    @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody User user) {
-        User newUser = this.userService.create(user);
+    @PostMapping("/signup")
+    public ResponseEntity<Void> create(@Valid @RequestBody CreateUserDTO user) {
+        Users newUser = this.userService.create(user);
         
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{cpf}").buildAndExpand(newUser.getCpf()).toUri();
@@ -55,7 +56,7 @@ public class UserController {
     //delete
     @DeleteMapping("/{cpf}")
      public ResponseEntity<Void> delete(@PathVariable Long cpf){
-         User deletable = this.userService.findByCpf(cpf);        
+         Users deletable = this.userService.findByCpf(cpf);        
         this.userService.delete(deletable);
         return ResponseEntity.noContent().build();
     }
@@ -72,8 +73,8 @@ public class UserController {
     }
     
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUsers() {
-    List<User> users = this.userService.getAll();
+    public ResponseEntity<List<Users>> getAllUsers() {
+    List<Users> users = this.userService.getAll();
     return ResponseEntity.ok().body(users);
 }
     

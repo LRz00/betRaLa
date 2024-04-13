@@ -27,7 +27,7 @@ public class Bet {
     
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Users user;
     
     @Column(nullable = false)
     private Float amount;
