@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Conta</title>
+    <title>Sing-in/SingUp</title>
     <link rel="stylesheet" href="style.css">
     <script src = "script.js" defer></script>
 </head>
@@ -13,12 +13,23 @@
     <div class = "banner-messi">
        
     </div>
-    <div class="create-form">
+    <div class="create-form">        
+        <img id = "logo" src="/imagens/logo2.png" alt="bet-rala-logo">
+        
+        <form id="loginForm">
+            <h2>Login</h2>
+            <label for="loginEmail">Email:</label>
+            <input type="email" id="loginEmail" name="loginEmail" required>
+            <br>
 
-        <img id = "logo" src="/src/main/resources/imagens/logo2.png" alt="bet-rala-logo">
-
-        <h2>Create Account</h2>
-        <form>
+            <label for="loginSenha">Password:</label>
+            <input type="password" id="loginSenha" name="loginSenha" required>
+            <br>
+            <button type="button" class ="button-53" onclick="login()">Login</button>
+        </form>
+        
+        <form id="signupForm" style="display: none;">
+            <h2>Create Account</h2>
             <label for="cpf">CPF:</label>
             <input type="text" id="cpf" name="cpf" required>
             <br>
@@ -34,8 +45,9 @@
             <label for="senha">Password:</label>
             <input type="password" id="senha" name="senha" required>
             <br>
-            <button type="button" id="btn" onclick="createAccount()"> Create Account</button>
+            <button type="button" class ="button-53" onclick="createAccount()"> Create Account</button>
         </form>
+        <button id="toggleButton" onclick="toggleForm()">Don't have an account? Sign up</button>
     </div>
 
 </body>

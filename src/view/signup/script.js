@@ -20,3 +20,22 @@ async function createAccount() {
       }),
     });
   }
+
+  async function login(){
+    //to-do
+  }
+
+  function toggleForm() {
+    var loginForm = document.getElementById("loginForm");
+    var signupForm = document.getElementById("signupForm");
+
+    if (loginForm.style.display === "none") {
+        loginForm.style.display = "block";
+        signupForm.style.display = "none";
+        toggleButton.textContent = "Don't have an account? Sign up";
+    } else {
+        loginForm.style.display = "none";
+        signupForm.style.display = "block";
+        toggleButton.textContent = "Already have an account? Login";
+    }
+}
